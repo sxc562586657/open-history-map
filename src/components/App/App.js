@@ -5,8 +5,8 @@ import "./App.css";
 import BaseMap from "../BaseMap/BaseMap";
 import TimeSelector from "../TimeSelector/TimeSelector";
 
-const TILESERVER_HOST = "http://localhost:3000";
-const DEFAULT_YEAR = "AD1783";
+const TILESERVER_HOST = process.env.REACT_APP_TILESERVER_HOST;
+const DEFAULT_YEAR = process.env.REACT_APP_DEFAULT_YEAR;
 
 function App() {
   const mapStyleTemplate =

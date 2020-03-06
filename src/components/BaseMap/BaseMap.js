@@ -18,7 +18,7 @@ class BaseMap extends React.Component {
   componentDidMount() {
     const map = new mapboxgl.Map({
       container: this.mapContainer,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: this.props.defaultStyle,
       minZoom: 2,
       maxZoom: 10
     });
