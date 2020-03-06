@@ -3,7 +3,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "./BaseMap.css";
 import mapboxgl from "mapbox-gl";
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 class BaseMap extends React.Component {
   constructor(props) {

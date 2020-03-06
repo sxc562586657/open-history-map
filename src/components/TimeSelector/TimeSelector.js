@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./TimeSelector.css";
 
@@ -90,24 +90,16 @@ const years = [
 ];
 
 function TimeSelector(props) {
-  const [currentYear, setCurrentYear] = useState("Select Year");
   const onChangeYear = e => {
     var selectedYear = e.currentTarget.textContent;
-    setCurrentYear(selectedYear);
-    var map = props.map;
-    map.setStyle(
-      props.styleTemplate.replace(
-        "{year}",
-        selectedYear.slice(-2) + selectedYear.slice(0, -2)
-      )
-    );
-    props.onMapObjectChange(map);
+    selectedYear = selectedYear.slice(-2) + selectedYear.slice(0, -2);
+    props.onCurrentYearChange(selectedYear);
   };
 
   return (
     <div className="dropdown">
       <button className="dropbtn" id="year-selection-button">
-        {currentYear}
+        {props.currentYear}
       </button>
       <div className="dropdown-content" id="years">
         <ul>

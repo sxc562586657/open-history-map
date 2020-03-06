@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./App.css";
 
@@ -9,12 +9,20 @@ const TILESERVER_HOST = process.env.REACT_APP_TILESERVER_HOST;
 const DEFAULT_YEAR = process.env.REACT_APP_DEFAULT_YEAR;
 
 function App() {
-  const mapStyleTemplate =
-    TILESERVER_HOST + "/styles/{year}/style.json";
+  const mapStyleTemplate = TILESERVER_HOST + "/styles/{year}/style.json";
   const [mapObject, setMapObject] = useState(0);
+  const [currentYear, setCurrentYear] = useState("Select Year");
+
   const handleMapObjectChange = updatedMapObject => {
     setMapObject(updatedMapObject);
   };
+
+  useEffect(() => {
+    if (mapObject !== 0) {
+      mapObject.setStyle(mapStyleTemplate.replace("{year}", currentYear));
+    }
+    // eslint-disable-next-line
+  }, [currentYear]);
 
   return (
     <div>
@@ -23,9 +31,8 @@ function App() {
         onMapObjectChange={handleMapObjectChange}
       />
       <TimeSelector
-        styleTemplate={mapStyleTemplate}
-        map={mapObject}
-        onMapObjectChange={handleMapObjectChange}
+        currentYear={currentYear}
+        onCurrentYearChange={setCurrentYear}
       />
     </div>
   );
