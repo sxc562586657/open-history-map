@@ -1,0 +1,102 @@
+export const convertStrTime2NumTime = strTime => {
+  let year = parseInt(strTime.substring(2));
+  if (strTime.substring(0, 2) === "BC") year *= -1;
+  return year;
+};
+
+export const convertNumTime2StrTime = numTime => {
+  return numTime < 0 ? "BC" + -1 * numTime : "AD" + numTime;
+};
+
+const years = [
+  -3000,
+  -2030,
+  -1735,
+  -1300,
+  -1000,
+  -800,
+  -600,
+  -570,
+  -539,
+  -490,
+  -449,
+  -400,
+  -356,
+  -330,
+  -280,
+  -260,
+  -247,
+  -221,
+  -213,
+  -206,
+  -200,
+  -168,
+  -146,
+  -121,
+  -100,
+  -60,
+  -44,
+  -33,
+  10,
+  23,
+  44,
+  74,
+  100,
+  117,
+  130,
+  150,
+  196,
+  225,
+  270,
+  300,
+  320,
+  350,
+  380,
+  400,
+  410,
+  450,
+  451,
+  476,
+  500,
+  527,
+  545,
+  560,
+  580,
+  600,
+  660,
+  680,
+  700,
+  750,
+  780,
+  814,
+  850,
+  875,
+  900,
+  910,
+  920,
+  940,
+  955,
+  980,
+  1000,
+  1040,
+  1080,
+  1100,
+  1127,
+  1170,
+  1200,
+  1235,
+  1300,
+  1350,
+  1400,
+  1500,
+  1599,
+  1783,
+  1812,
+  1825
+];
+
+export const nearestYear = inputYear => {
+  return years.reduce((prev, curr) => {
+    return (Math.abs(curr - inputYear) < Math.abs(prev - inputYear) ? curr : prev);
+  });
+};
