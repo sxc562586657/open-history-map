@@ -3,9 +3,9 @@ import { Switch, Route } from "react-router-dom";
 
 import "./App.css";
 
-import MapPage from "../MapPage/MapPage"
-import FeatureEditor from "../FeatureEditor/FeatureEditor"
-import FeatureList from "../FeatureList/FeatureList"
+import MapPage from "../MapPage/MapPage";
+import FeatureEditor from "../FeatureEditor/FeatureEditor";
+import FeatureList from "../FeatureList/FeatureList";
 
 function App() {
   return (
@@ -19,6 +19,12 @@ function App() {
         </Route>
         <Route path="/feature-list">
           <FeatureList />
+        </Route>
+        {/* 
+          TODO: Will be nice to have a homepage for navigation
+        */}
+        <Route path="/">
+          <MapPage />
         </Route>
       </Switch>
     </div>
