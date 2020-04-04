@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Component } from "react";
 import L from "leaflet";
 import { UnControlled as CodeMirror } from "react-codemirror2";
 
@@ -11,46 +11,70 @@ import "./FeatureEditor.css";
 require("codemirror/mode/javascript/javascript");
 
 const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
-let map;
-let features;
-let geojson_editor_content = JSON.stringify(
-  JSON.parse('{\n"type": "FeatureCollection",\n"features": []\n}'),
-  null,
-  "\t"
+const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
+const geojson_editor_template = JSON.parse(
+  '{"type": "FeatureCollection","features": []}'
 );
-let code_editor;
 
-function onChange(editor, data, value) {
-  // Prevent infinite loop
-  if (data.origin === "setValue") return;
-  // if (JSON.stringify(JSON.parse(value)) === JSON.stringify(JSON.parse(editor.getValue()))) return;
-  let geojson = this;
-  try {
-    geojson = JSON.parse(value);
-  } catch (e) {
-    console.log("Invalid GeoJSON!");
-    return;
+class FeatureEditor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      map: 0,
+      features: 0,
+      code_editor: 0,
+      json: JSON.parse('{"type": "FeatureCollection","features": []}')
+    };
+    this.loadGeoJSONtoMap = this.loadGeoJSONtoMap.bind(this);
+    this.pushToCodeEditor = this.pushToCodeEditor.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
-  editor.setValue(JSON.stringify(JSON.parse(value), null, "\t"));
-  // console.log("onChange: ", JSON.stringify(JSON.parse(value), null, "\t"));
-  loadGeoJSONtoMap(geojson);
-}
 
-function pushToCodeEditor() {
-  code_editor.setValue(JSON.stringify(features.toGeoJSON(), null, "\t"));
-  // console.log(geojson_editor_content);
-}
+  loadGeoJSONtoMap(geojson) {
+    if (this.state.features !== 0)
+      this.state.features.clearLayers(); 
+    let features = L.geoJSON(geojson).addTo(this.state.map);
+    features.on("pm:edit", this.pushToCodeEditor);
+    if (geojson.features.length !== 0)
+      this.state.map.fitBounds(features.getBounds());
+    this.setState({features: features});
 
-function loadGeoJSONtoMap(geojson) {
-  features = L.geoJSON(geojson);
-  features.addTo(map);
-  features.on("pm:edit", pushToCodeEditor);
-  if (geojson.features.length !== 0) map.fitBounds(features.getBounds());
-}
+    // this.setState({ features: L.geoJSON(geojson) }, () => {
+    //   this.state.features.addTo(this.state.map);
+    //   this.state.features.on("pm:edit", this.pushToCodeEditor);
+    //   if (geojson.features.length !== 0)
+    //     this.state.map.fitBounds(this.state.features.getBounds());
+    // });
+  }
 
-function FeatureEditor() {
-  useEffect(() => {
-    map = L.map("feature-editor").setView([51.505, -0.09], 4);
+  pushToCodeEditor() {
+    this.state.code_editor.setValue(
+      JSON.stringify(this.state.features.toGeoJSON(), null, "\t")
+    );
+    // console.log(geojson_editor_content);
+  }
+
+  onChange(editor, data, value) {
+    // Prevent infinite loop
+    if (data.origin === "setValue") return;
+    // if (JSON.stringify(JSON.parse(value)) === JSON.stringify(JSON.parse(editor.getValue()))) return;
+    try {
+      let current_json = JSON.parse(value);
+      if (!current_json.features) {
+        geojson_editor_template["features"] = [current_json];
+      }
+    } catch (e) {
+      console.log("Invalid GeoJSON!");
+      return;
+    }
+    editor.setValue(JSON.stringify(geojson_editor_template, null, "\t"));
+    // console.log("onChange: ", JSON.stringify(JSON.parse(value), null, "\t"));
+    // console.log(geojson_editor_template);
+    this.loadGeoJSONtoMap(geojson_editor_template);
+  }
+
+  initMap() {
     L.tileLayer(
       "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
       {
@@ -62,36 +86,59 @@ function FeatureEditor() {
         zoomOffset: -1,
         accessToken: accessToken
       }
-    ).addTo(map);
-    map.pm.addControls({
+    ).addTo(this.state.map);
+    this.state.map.pm.addControls({
       position: "topleft",
       drawCircle: false
     });
-    map.pm.setGlobalOptions({ limitMarkersToCount: 60 });
-  }, []);
+    this.state.map.pm.setGlobalOptions({ limitMarkersToCount: 60 });
+    this.fetchData();
+  }
 
-  return (
-    <div className="editor">
-      <div id="feature-editor"></div>
-      <div className="code-editor-container">
-        <CodeMirror
-          value={geojson_editor_content}
-          options={{
-            mode: "javascript",
-            theme: "dracula",
-            lineNumbers: true
-          }}
-          editorDidMount={editor => {
-            code_editor = editor;
-          }}
-          onChange={onChange}
-        />
-        <div className="toolbar">
-          <button className="submit-button">Submit</button>
+  fetchData() {
+    // console.log("fetchData");
+    const {
+      match: { params }
+    } = this.props;
+    fetch(backendUrl + "/api/geojson/id/" + params.id)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ json: data });
+        // console.log(this.state.json);
+      });
+  }
+
+  componentDidMount() {
+    this.setState(
+      { map: L.map("feature-editor").setView([51.505, -0.09], 4) },
+      this.initMap
+    );
+  }
+
+  render() {
+    return (
+      <div className="editor">
+        <div id="feature-editor"></div>
+        <div className="code-editor-container">
+          <CodeMirror
+            value={JSON.stringify(this.state.json, null, "\t")}
+            options={{
+              mode: "javascript",
+              theme: "dracula",
+              lineNumbers: true
+            }}
+            editorDidMount={editor => {
+              this.setState({ code_editor: editor });
+            }}
+            onChange={this.onChange}
+          />
+          <div className="toolbar">
+            <button className="submit-button">Submit</button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default FeatureEditor;

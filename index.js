@@ -1,10 +1,19 @@
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose", { useUnifiedTopology: true });
 const bodyParser = require("body-parser");
 
 require("./models/Geojson");
 
 const app = express();
+// app.use(cors);
+app.use(function (req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8081');
+  // Pass to next layer of middleware
+  next();
+});
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
