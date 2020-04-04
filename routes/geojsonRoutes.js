@@ -12,7 +12,15 @@ module.exports = app => {
   app.get(`/api/geojson/:year`, async (req, res) => {
     const { year } = req.params;
     let geojsons = await geojson.find({ year: year });
-    return res.status(200).send(geojsons)
+    return res.status(200).send(geojsons);
+  });
+
+  // GET SPECIFIC ID ENTITY API
+  app.get(`/api/geojson/id/:id`, async (req, res) => {
+    const { id } = req.params;
+    let geojsons = await geojson.findById(id);
+
+    return res.status(202).send(geojsons);
   });
 
   // CREATE API
