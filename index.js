@@ -1,20 +1,21 @@
 const express = require("express");
-const mongoose = require("mongoose");
+const mongoose = require("mongoose", { useUnifiedTopology: true });
 const bodyParser = require("body-parser");
 
-require('./models/Geojson');
+require("./models/Geojson");
 
 const app = express();
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  process.env.MONGODB_URI || `mongodb://localhost:27017/history-map`
+  process.env.MONGODB_URI || `mongodb://localhost:27017/history-map`,
+  { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-require('./routes/geojsonRoutes')(app);
+require("./routes/geojsonRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

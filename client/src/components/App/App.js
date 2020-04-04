@@ -9,7 +9,7 @@ import FeatureList from "../FeatureList/FeatureList";
 
 function App() {
   return (
-    <div>
+    <div className="pageContainer">
       <Switch>
         <Route path="/map">
           <MapPage />
