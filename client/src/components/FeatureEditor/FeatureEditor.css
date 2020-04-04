@@ -1,0 +1,18 @@
+.editor {
+    display: flex;
+    height: 100%;
+}
+
+#feature-editor {
+    height: 100%;
+    width: 60%;
+}
+
+.CodeMirror {
+    height: 100%;
+    overflow: scroll;
+}
+
+.react-codemirror2 {
+    width: 40%;
+}
