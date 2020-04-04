@@ -73,18 +73,23 @@ function FeatureEditor() {
   return (
     <div className="editor">
       <div id="feature-editor"></div>
-      <CodeMirror
-        value={geojson_editor_content}
-        options={{
-          mode: "javascript",
-          theme: "dracula",
-          lineNumbers: true
-        }}
-        editorDidMount={editor => {
-          code_editor = editor;
-        }}
-        onChange={onChange}
-      />
+      <div className="code-editor-container">
+        <CodeMirror
+          value={geojson_editor_content}
+          options={{
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true
+          }}
+          editorDidMount={editor => {
+            code_editor = editor;
+          }}
+          onChange={onChange}
+        />
+        <div className="toolbar">
+          <button className="submit-button">Submit</button>
+        </div>
+      </div>
     </div>
   );
 }
