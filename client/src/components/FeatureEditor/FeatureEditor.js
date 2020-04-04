@@ -105,7 +105,8 @@ class FeatureEditor extends Component {
       .then(data => {
         this.setState({ json: data });
         // console.log(this.state.json);
-      });
+      })
+      .catch(error => console.log(error) );
   }
 
   componentDidMount() {
