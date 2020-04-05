@@ -12,7 +12,7 @@ require("codemirror/mode/javascript/javascript");
 
 const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
-const geojson_editor_template = JSON.parse(
+let geojson_editor_content = JSON.parse(
   '{"type": "FeatureCollection","features": []}'
 );
 
@@ -29,16 +29,16 @@ class FeatureEditor extends Component {
     this.pushToCodeEditor = this.pushToCodeEditor.bind(this);
     this.onChange = this.onChange.bind(this);
     this.fetchData = this.fetchData.bind(this);
+    this.submitData = this.submitData.bind(this);
   }
 
   loadGeoJSONtoMap(geojson) {
-    if (this.state.features !== 0)
-      this.state.features.clearLayers(); 
+    if (this.state.features !== 0) this.state.features.clearLayers();
     let features = L.geoJSON(geojson).addTo(this.state.map);
     features.on("pm:edit", this.pushToCodeEditor);
     if (geojson.features.length !== 0)
       this.state.map.fitBounds(features.getBounds());
-    this.setState({features: features});
+    this.setState({ features: features });
 
     // this.setState({ features: L.geoJSON(geojson) }, () => {
     //   this.state.features.addTo(this.state.map);
@@ -52,26 +52,29 @@ class FeatureEditor extends Component {
     this.state.code_editor.setValue(
       JSON.stringify(this.state.features.toGeoJSON(), null, "\t")
     );
-    // console.log(geojson_editor_content);
   }
 
   onChange(editor, data, value) {
     // Prevent infinite loop
     if (data.origin === "setValue") return;
-    // if (JSON.stringify(JSON.parse(value)) === JSON.stringify(JSON.parse(editor.getValue()))) return;
     try {
       let current_json = JSON.parse(value);
       if (!current_json.features) {
-        geojson_editor_template["features"] = [current_json];
+        geojson_editor_content.features = [current_json];
+      } else {
+        geojson_editor_content = current_json;
       }
     } catch (e) {
       console.log("Invalid GeoJSON!");
       return;
     }
-    editor.setValue(JSON.stringify(geojson_editor_template, null, "\t"));
-    // console.log("onChange: ", JSON.stringify(JSON.parse(value), null, "\t"));
-    // console.log(geojson_editor_template);
-    this.loadGeoJSONtoMap(geojson_editor_template);
+    this.loadGeoJSONtoMap(geojson_editor_content);
+    if (
+      JSON.stringify(JSON.parse(value)["geometry"]) ===
+      JSON.stringify(JSON.parse(editor.getValue())["geometry"])
+    )
+      return;
+    editor.setValue(JSON.stringify(geojson_editor_content, null, "\t"));
   }
 
   initMap() {
@@ -96,17 +99,34 @@ class FeatureEditor extends Component {
   }
 
   fetchData() {
-    // console.log("fetchData");
     const {
       match: { params }
     } = this.props;
     fetch(backendUrl + "/api/geojson/id/" + params.id)
       .then(response => response.json())
       .then(data => {
-        this.setState({ json: data });
-        // console.log(this.state.json);
+        geojson_editor_content.features = [data];
+        this.setState({ json: geojson_editor_content });
       })
-      .catch(error => console.log(error) );
+      .catch(error => console.log(error));
+  }
+
+  parseFeature(current_value) {
+    if (current_value.features && current_value.features.length !== 0)
+      return JSON.stringify(current_value["features"][0]);
+  }
+
+  submitData() {
+    const {
+      match: { params }
+    } = this.props;
+    fetch(backendUrl + "/api/geojson/" + params.id, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: this.parseFeature(geojson_editor_content)
+    })
+      .then(response => response.json())
+      .catch(error => console.log(error));
   }
 
   componentDidMount() {
@@ -134,7 +154,9 @@ class FeatureEditor extends Component {
             onChange={this.onChange}
           />
           <div className="toolbar">
-            <button className="submit-button">Submit</button>
+            <button className="submit-button" onClick={this.submitData}>
+              Submit
+            </button>
           </div>
         </div>
       </div>
