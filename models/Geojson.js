@@ -8,7 +8,7 @@ const featureSchema = new mongoose.Schema({
     required: true
   },
   coordinates: {
-    type: [[[Array]]],
+    type: [[Array]],
     required: true
   }
 });
