@@ -68,7 +68,10 @@ class FeatureEditor extends Component {
         geojson_editor_content = current_json;
       }
     } catch (e) {
-      console.log("Invalid GeoJSON!");
+      toast("Invalid GeoJSON!", {
+        type: "error",
+        autoClose: 1500,
+      });
       return;
     }
     this.loadGeoJSONtoMap(geojson_editor_content);
@@ -131,6 +134,7 @@ class FeatureEditor extends Component {
       .then(response => {
         response.json();
         toast("Submitted!", {
+          type: "success",
           autoClose: 3000,
         });
       })
