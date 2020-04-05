@@ -51,6 +51,7 @@ class FeatureEditor extends Component {
   }
 
   pushToCodeEditor() {
+    geojson_editor_content = this.state.features.toGeoJSON();
     this.state.code_editor.setValue(
       JSON.stringify(this.state.features.toGeoJSON(), null, "\t")
     );
