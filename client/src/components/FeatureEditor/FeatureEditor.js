@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import L from "leaflet";
 import { UnControlled as CodeMirror } from "react-codemirror2";
+import { ToastContainer, toast } from "react-toastify";
 
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/dracula.css";
 import "@geoman-io/leaflet-geoman-free";
 import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+import "react-toastify/dist/ReactToastify.css";
 import "./FeatureEditor.css";
 
 require("codemirror/mode/javascript/javascript");
@@ -125,7 +127,12 @@ class FeatureEditor extends Component {
       headers: { "Content-Type": "application/json" },
       body: this.parseFeature(geojson_editor_content)
     })
-      .then(response => response.json())
+      .then(response => {
+        response.json();
+        toast("Submitted!", {
+          autoClose: 3000,
+        });
+      })
       .catch(error => console.log(error));
   }
 
@@ -159,6 +166,7 @@ class FeatureEditor extends Component {
             </button>
           </div>
         </div>
+        <ToastContainer />
       </div>
     );
   }
