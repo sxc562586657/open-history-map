@@ -15,7 +15,7 @@ function FeatureList() {
       .catch(error => console.log(error));
   }, []);
   const featureIDs = featureList.map(feature => (
-    <FeatureListEntity feature={ feature } />
+    <FeatureListEntity key={ feature._id } feature={ feature } />
   ));
 
   return <div>{featureIDs}</div>;
