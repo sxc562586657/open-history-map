@@ -37,7 +37,6 @@ module.exports = app => {
     const { id } = req.params;
 
     await geojson.findByIdAndUpdate(id, req.body);
-    console.log(req.body);
 
     return res.status(202).send({
       messege: "Successfully updated"
