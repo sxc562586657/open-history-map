@@ -36,11 +36,11 @@ module.exports = app => {
   app.put(`/api/geojson/:id`, async (req, res) => {
     const { id } = req.params;
 
-    let geojson = await geojson.findByIdAndUpdate(id, req.body);
+    await geojson.findByIdAndUpdate(id, req.body);
+    console.log(req.body);
 
     return res.status(202).send({
-      error: false,
-      geojson
+      messege: "Successfully updated"
     });
   });
 
