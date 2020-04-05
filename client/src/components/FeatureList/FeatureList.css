@@ -1,0 +1,8 @@
+.feature-list-container {
+  width: 80%;
+  margin: auto;
+  margin-top: 10px;
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

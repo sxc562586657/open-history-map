@@ -1,0 +1,33 @@
+.feature-card-container {
+  min-width: 250px;
+  max-width: 250px;
+  height: 125px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+  margin: 10px;
+}
+
+.feature-card-title {
+  background-color: #78ad7f;
+  color: white;
+  padding: 10px;
+  font-size: 25px;
+  font-family: Arial, Helvetica, sans-serif, '微软雅黑';
+  height: 60px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.feature-card-year {
+  background-color: #b1dac2;
+  color: rgb(109, 108, 108);
+  padding: 10px;
+  position: relative;
+  bottom: 0;
+  font-family: Arial, Helvetica, sans-serif, '微软雅黑';
+  height: 25px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}

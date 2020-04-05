@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import FeatureListEntity from "../FeatureListEntity/FeatureListEntity"
 
+import "./FeatureList.css"
+
 const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
 
 function FeatureList() {
@@ -18,7 +20,7 @@ function FeatureList() {
     <FeatureListEntity key={ feature._id } feature={ feature } />
   ));
 
-  return <div>{featureIDs}</div>;
+  return <div className="feature-list-container">{featureIDs}</div>;
 }
 
 export default FeatureList;
