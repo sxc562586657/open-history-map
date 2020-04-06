@@ -1,8 +1,15 @@
 .feature-list-container {
-  width: 80%;
-  margin: auto;
   margin-top: 10px;
-  display: flex; 
+  display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  float: right;
+  padding: 0px 20px;
+}
+
+.feature-list-filter-container {
+    width: 250px;
+}
+
+.feature-list {
+    display: flex;
 }

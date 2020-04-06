@@ -70,7 +70,7 @@ class FeatureEditor extends Component {
     } catch (e) {
       toast("Invalid GeoJSON!", {
         type: "error",
-        autoClose: false
+        autoClose: 1500
       });
       return;
     }
