@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import "./FeatureListEntity.css";
 
 function FeatureListEntity(props) {
-  const featureID = props.feature._id;
-  const featureYear = props.feature.year;
-  const featureTitle = props.feature.properties.title;
+  let featureID = props.feature ? props.feature._id : "";
+  let featureYear = props.feature ? props.feature.year : "?";
+  let featureTitle = props.feature ? props.feature.properties.title : "+CREATE";
   return (
     <div className="feature-card-container">
       <div className="feature-card-title">

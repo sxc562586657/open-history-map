@@ -11,7 +11,7 @@ function FeatureList() {
   const [filterTitle, setFilterTitle] = useState("");
 
   useEffect(() => {
-    fetch(backendUrl + "/api/geojson/")
+    fetch(backendUrl + "/api/geojson/" + filterYear)
       .then(response => response.json())
       .then(data => {
         setFeatureList(data);
@@ -38,7 +38,7 @@ function FeatureList() {
     <div className="feature-list">
       <div className="feature-list-filter-container">
         <div>
-          <label for="year-filter">Year: </label>
+          <label htmlFor="year-filter">Year: </label>
           <input
             id="year-filter"
             type="text"
@@ -48,7 +48,7 @@ function FeatureList() {
         </div>
 
         <div>
-          <label for="title-filter">Title </label>
+          <label htmlFor="title-filter">Title </label>
           <input
             id="title-filter"
             type="text"
@@ -57,7 +57,10 @@ function FeatureList() {
           ></input>
         </div>
       </div>
-      <div className="feature-list-container">{featureEntities}</div>
+      <div className="feature-list-container">
+        <FeatureListEntity key={"create-button"} feature={null} />
+        {featureEntities}
+      </div>
     </div>
   );
 }
