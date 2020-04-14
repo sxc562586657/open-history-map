@@ -1,4 +1,5 @@
-# open-history-map [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# open-history-map 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  [![Slack Status](https://img.shields.io/badge/chat-on%20Slack-brightgreen)](https://open-history-map.slack.com)  
 An open-source historical map empowering open-source historical information editing.
 
 ## Overview
