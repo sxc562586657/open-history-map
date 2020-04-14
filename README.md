@@ -91,6 +91,13 @@ REACT_APP_BACKEND_SERVER=http://localhost:5000
     $ sudo service mongodb start
     ```
 
+## Import data from repo
+```
+git clone https://github.com/sxc562586657/open-history-map-data
+cd open-history-map-data
+sh import_data.sh
+```
+
 ## Running the project(Including NodeJS server & React app)
 
     $ npm run dev
@@ -102,3 +109,7 @@ REACT_APP_BACKEND_SERVER=http://localhost:5000
 ## Running the frontend standalone
     
     $ npm run client
+
+## Default Entry Point
+- Frontend: [localhost:8081](localhost:8081)
+- Backend: [localhost:5000](localhost:5000)
