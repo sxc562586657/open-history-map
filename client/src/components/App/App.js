@@ -14,7 +14,7 @@ function App() {
         <Route path="/map">
           <MapPage />
         </Route>
-        <Route path="/feature-editor/:id" component={FeatureEditor}>
+        <Route path="/feature-editor/:id?" component={FeatureEditor}>
         </Route>
         <Route path="/feature-list">
           <FeatureList />
