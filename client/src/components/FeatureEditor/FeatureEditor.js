@@ -19,6 +19,7 @@ let geojson_editor_content = JSON.parse(
 );
 
 class FeatureEditor extends Component {
+  toastID = 0;
   constructor(props) {
     super(props);
     this.state = {
@@ -68,16 +69,19 @@ class FeatureEditor extends Component {
         geojson_editor_content = current_json;
       }
     } catch (e) {
-      toast("Invalid GeoJSON!", {
-        type: "error",
-        autoClose: 1500
-      });
+      if (!toast.isActive(this.toastId)) {
+        this.toastId = toast("Invalid GeoJSON!", {
+          type: "error",
+          autoClose: 1500
+        });
+      }
       return;
     }
     this.loadGeoJSONtoMap(geojson_editor_content);
     if (
+      data.origin !== "paste" &&
       JSON.stringify(JSON.parse(value)["geometry"]) ===
-      JSON.stringify(JSON.parse(editor.getValue())["geometry"])
+        JSON.stringify(JSON.parse(editor.getValue())["geometry"])
     )
       return;
     editor.setValue(JSON.stringify(geojson_editor_content, null, "\t"));
@@ -108,13 +112,14 @@ class FeatureEditor extends Component {
     const {
       match: { params }
     } = this.props;
-    fetch(backendUrl + "/api/geojson/id/" + params.id)
-      .then(response => response.json())
-      .then(data => {
-        geojson_editor_content.features = [data];
-        this.setState({ json: geojson_editor_content });
-      })
-      .catch(error => console.log(error));
+    if (params.id)
+      fetch(backendUrl + "/api/geojson/id/" + params.id)
+        .then(response => response.json())
+        .then(data => {
+          geojson_editor_content.features = [data];
+          this.setState({ json: geojson_editor_content });
+        })
+        .catch(error => console.log(error));
   }
 
   parseFeature(current_value) {
@@ -126,8 +131,16 @@ class FeatureEditor extends Component {
     const {
       match: { params }
     } = this.props;
-    fetch(backendUrl + "/api/geojson/" + params.id, {
-      method: "PUT",
+    let requestUrl = backendUrl;
+    let method = "PUT";
+    if (params.id) {
+      requestUrl += "/api/geojson/" + params.id;
+    } else {
+      requestUrl += "/api/geojson";
+      method = "POST";
+    }
+    fetch(requestUrl, {
+      method: method,
       headers: { "Content-Type": "application/json" },
       body: this.parseFeature(geojson_editor_content)
     })
