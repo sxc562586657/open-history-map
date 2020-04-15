@@ -3,15 +3,13 @@ import FeatureListEntity from "../FeatureListEntity/FeatureListEntity";
 
 import "./FeatureList.css";
 
-const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
-
 function FeatureList() {
   const [featureList, setFeatureList] = useState([]);
   const [filterYear, setFilterYear] = useState("AD10");
   const [filterTitle, setFilterTitle] = useState("");
 
   useEffect(() => {
-    fetch(backendUrl + "/api/geojson/" + filterYear)
+    fetch("/api/geojson/" + filterYear)
       .then(response => response.json())
       .then(data => {
         setFeatureList(data);
