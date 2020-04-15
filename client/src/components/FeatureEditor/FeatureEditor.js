@@ -13,7 +13,6 @@ import "./FeatureEditor.css";
 require("codemirror/mode/javascript/javascript");
 
 const accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
-const backendUrl = process.env.REACT_APP_BACKEND_SERVER;
 let geojson_editor_content = JSON.parse(
   '{"type": "FeatureCollection","features": []}'
 );
@@ -113,7 +112,7 @@ class FeatureEditor extends Component {
       match: { params }
     } = this.props;
     if (params.id)
-      fetch(backendUrl + "/api/geojson/id/" + params.id)
+      fetch("/api/geojson/id/" + params.id)
         .then(response => response.json())
         .then(data => {
           geojson_editor_content.features = [data];
@@ -131,7 +130,7 @@ class FeatureEditor extends Component {
     const {
       match: { params }
     } = this.props;
-    let requestUrl = backendUrl;
+    let requestUrl = "";
     let method = "PUT";
     if (params.id) {
       requestUrl += "/api/geojson/" + params.id;
