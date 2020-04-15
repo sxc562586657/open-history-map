@@ -55,6 +55,12 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 
     $ npm install npm -g
 
+### Tileserver
+- #### Install tileserver
+  ```
+  $ npm install -g tileserver-gl-light
+  ```
+
 ---
 
 ## Install
@@ -96,7 +102,7 @@ REACT_APP_BACKEND_SERVER=http://localhost:5000
 ```
 git clone https://github.com/sxc562586657/open-history-map-data
 cd open-history-map-data
-sh import_data.sh
+./import_data.sh
 ```
 
 ## Running the project(Including NodeJS server & React app)
@@ -110,6 +116,12 @@ sh import_data.sh
 ## Running the frontend standalone
     
     $ npm run client
+
+## Export data from MongoDB
+```
+cd open-history-map-data
+./export_data.sh
+```
 
 ## Default Entry Point
 - Frontend: [localhost:8081](localhost:8081)
