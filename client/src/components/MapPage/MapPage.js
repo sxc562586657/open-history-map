@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 import BaseMap from "../BaseMap/BaseMap";
 import TimeSelector from "../TimeSelector/TimeSelector";
 
-const TILESERVER_HOST = process.env.REACT_APP_TILESERVER_HOST;
+const TILESERVER_HOST = "https://tileserver-history-map.herokuapp.com/";
 const DEFAULT_YEAR = process.env.REACT_APP_DEFAULT_YEAR;
 
 function MapPage() {
