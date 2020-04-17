@@ -20,7 +20,7 @@ class BaseMap extends React.Component {
       container: this.mapContainer,
       style: this.props.defaultStyle,
       minZoom: 2,
-      maxZoom: 10
+      maxZoom: 8
     });
     map.addControl(new mapboxgl.NavigationControl());
     map.addControl(new mapboxgl.GeolocateControl());
