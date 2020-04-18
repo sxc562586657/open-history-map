@@ -2,9 +2,8 @@ import React from "react";
 
 import "./TimeSelector.css";
 
-let years = [];
-
 function TimeSelector(props) {
+  let years = [];
   for (let i = -600; i <= 1500; i++) {
     years.push(i < 0 ? "BC" + -1 * i : "AD" + i)
   }
