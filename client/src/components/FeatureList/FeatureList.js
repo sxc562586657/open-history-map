@@ -15,7 +15,7 @@ function FeatureList() {
         setFeatureList(data);
       })
       .catch(error => console.log(error));
-  }, []);
+  }, [filterYear]);
   const featureEntities = featureList
     .filter(feature => filterYear === "" || feature.year === filterYear)
     .filter(
