@@ -3,11 +3,11 @@ import React, {useState, useEffect} from "react";
 import BaseMap from "../BaseMap/BaseMap";
 import TimeSelector from "../TimeSelector/TimeSelector";
 
-const TILESERVER_HOST = "https://tileserver-history-map.herokuapp.com";
+const TILESERVER_HOST = process.env.REACT_APP_TILESERVER_HOST;
 const DEFAULT_YEAR = process.env.REACT_APP_DEFAULT_YEAR;
 
 function MapPage() {
-  const mapStyleTemplate = TILESERVER_HOST + "/styles/{year}/style.json";
+  const mapStyleTemplate = TILESERVER_HOST + "/styles/{year}.json";
   const [mapObject, setMapObject] = useState(0);
   const [currentYear, setCurrentYear] = useState("Select Year");
 
