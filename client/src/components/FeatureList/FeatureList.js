@@ -20,7 +20,7 @@ function FeatureList() {
     .filter(feature => filterYear === "" || feature.year === filterYear)
     .filter(
       feature =>
-        filterTitle === "" || feature.properties.title.includes(filterTitle)
+        filterTitle === "" || (feature.properties.title !== undefined && feature.properties.title.includes(filterTitle))
     )
     .map(feature => <FeatureListEntity key={feature._id} feature={feature} />);
 
